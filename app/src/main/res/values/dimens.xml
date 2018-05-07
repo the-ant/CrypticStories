@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="img_poster_width">90dp</dimen>
+    <dimen name="img_poster_height">120dp</dimen>
+
+    <dimen name="text_padding">16dp</dimen>
+    <dimen name="text_size_medium">32sp</dimen>
+    <dimen name="text_size_small">18sp</dimen>
+
+    <dimen name="loading_width">16dp</dimen>
+    <dimen name="loading_height">16dp</dimen>
+    <dimen name="loading_width_medium">24dp</dimen>
+    <dimen name="loading_height_medium">24dp</dimen>
+    <dimen name="story_item_margin">8dp</dimen>
+    <dimen name="poster_progressbar_size">16dp</dimen>
+</resources>
