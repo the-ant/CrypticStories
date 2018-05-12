@@ -8,4 +8,6 @@
     <color name="placeholder_color" >#b6b5b5</color>
     <color name="background">#EFEFEF</color>
     <color name="background_recycler">#f2f2f2</color>
+
+    <color name="colorBlur">#30f9f9f9</color>
 </resources>

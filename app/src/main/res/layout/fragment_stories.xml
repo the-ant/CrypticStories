@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/primary_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
-            <RelativeLayout
-                android:id="@+id/primary_layout"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/storiesListing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/storiesListing"
-                    android:layout_width="match_parent"
-                    android:background="@color/background_recycler"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:scrollbars="vertical" />
-            </RelativeLayout>
-
-            <ProgressBar
-                android:id="@+id/load_data_progress"
-                android:layout_width="@dimen/loading_width_medium"
-                android:layout_height="@dimen/loading_height_medium"
-                android:layout_centerInParent="true"
-                android:indeterminateDrawable="@drawable/progress_indeterminate"
-                android:visibility="visible" />
+                android:background="@color/background_recycler"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
         </RelativeLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
-</layout>
+
+        <ProgressBar
+            android:id="@+id/load_data_progress"
+            android:layout_width="@dimen/loading_width_medium"
+            android:layout_height="@dimen/loading_height_medium"
+            android:indeterminateDrawable="@drawable/custom_progress"
+            android:layout_centerInParent="true"
+            android:visibility="visible" />
+    </RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

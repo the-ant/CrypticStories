@@ -1,26 +1,29 @@
-package sdt.com.crypticstories.home;
-
+package sdt.com.crypticstories.home.adapter;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import sdt.com.crypticstories.R;
-import sdt.com.crypticstories.databinding.StoryItemBinding;
-import sdt.com.crypticstories.pojos.Story;
+import sdt.com.crypticstories.home.view.HomeView;
+import sdt.com.crypticstories.model.Story;
 
 public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int ITEM = 0;
     private static final int LOADING = 1;
+    private static final String TAG = "adapter";
 
-    private StoryItemBinding itemBinding;
     private List<Story> stories;
     private Context context;
     private HomeView homeView;
@@ -33,18 +36,24 @@ public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     protected class StoryViewHolder extends RecyclerView.ViewHolder {
-        private StoryItemBinding binding;
+        @BindView(R.id.title)
+        TextView title;
+        @BindView(R.id.card_view)
+        CardView cardView;
+        @BindView(R.id.description)
+        TextView description;
+        @BindView(R.id.poster)
+        ImageView poster;
 
-        public StoryViewHolder(StoryItemBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        public StoryViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
 
         public void bind(final Story story) {
-            binding.storyTitle.setText(story.getName());
-            binding.views.setText("" + story.getViews());
-            binding.releaseDate.setText(story.getReleaseDate());
-            binding.storyPoster.setImageResource(R.drawable.naruto);
+            title.setText(story.getNameStory());
+            description.setText(story.getContent());
+            cardView.setPreventCornerOverlap(false);
             itemView.setOnClickListener(v -> StoriesAdapter.this.homeView.onStoryClicked(story));
         }
     }
@@ -62,16 +71,16 @@ public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         RecyclerView.ViewHolder viewHolder = null;
+        View view;
 
         switch (viewType) {
             case ITEM:
-                itemBinding = DataBindingUtil.inflate(inflater, R.layout.story_item,
-                        parent, false);
-                viewHolder = new StoryViewHolder(itemBinding);
+                view = inflater.inflate(R.layout.story_item, parent, false);
+                viewHolder = new StoryViewHolder(view);
                 break;
             case LOADING:
-                View loadingView = inflater.inflate(R.layout.item_load_more_progress, parent, false);
-                viewHolder = new LoadingMoreViewHolder(loadingView);
+                view = inflater.inflate(R.layout.item_load_more_progress, parent, false);
+                viewHolder = new LoadingMoreViewHolder(view);
                 break;
         }
         return viewHolder;
@@ -131,17 +140,17 @@ public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return getItemCount() == 0;
     }
 
-    public void addLoadingFooter(){
+    public void addLoadingFooter() {
         isLoadingAdded = true;
         Story story = new Story();
         add(story);
     }
 
-    public void removeLoadingFooter(){
+    public void removeLoadingFooter() {
         isLoadingAdded = false;
         int position = stories.size() - 1;
         Story removeStory = getItem(position);
-        if (removeStory != null){
+        if (removeStory != null) {
             stories.remove(position);
             notifyItemRemoved(position);
         }
