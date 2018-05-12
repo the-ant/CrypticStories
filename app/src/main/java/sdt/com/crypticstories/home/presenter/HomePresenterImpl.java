@@ -1,16 +1,16 @@
 package sdt.com.crypticstories.home.presenter;
 
-import sdt.com.crypticstories.home.model.StoriesInteractor;
+import sdt.com.crypticstories.home.model.StoriesInteraction;
 import sdt.com.crypticstories.home.view.HomeView;
-import sdt.com.crypticstories.model.StoryResponse;
+import sdt.com.crypticstories.pojo.StoryResponse;
 
 public class HomePresenterImpl implements HomePresenter {
     private static final String TAG = "home_presenter";
     private HomeView homeView;
-    private StoriesInteractor storiesInteractor;
+    private StoriesInteraction storiesInteraction;
 
-    public HomePresenterImpl(StoriesInteractor storiesInteractor) {
-        this.storiesInteractor = storiesInteractor;
+    public HomePresenterImpl(StoriesInteraction storiesInteraction) {
+        this.storiesInteraction = storiesInteraction;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class HomePresenterImpl implements HomePresenter {
     public void displayStories(int currentPage) {
         if (isViewAttached()) {
             homeView.showLoadingProgress();
-            storiesInteractor.fetchStories(currentPage, new StoriesInteractor.OnLoadedStoriesListener() {
+            storiesInteraction.fetchStories(currentPage, new StoriesInteraction.OnLoadedStoriesListener() {
                 @Override
                 public void onFinished(StoryResponse response) {
                     homeView.displayHome(response);
@@ -41,7 +41,7 @@ public class HomePresenterImpl implements HomePresenter {
     public void reloadData(int currentPage) {
         if (isViewAttached()) {
             homeView.showRefresh();
-            storiesInteractor.fetchStories(currentPage, new StoriesInteractor.OnLoadedStoriesListener() {
+            storiesInteraction.fetchStories(currentPage, new StoriesInteraction.OnLoadedStoriesListener() {
                 @Override
                 public void onFinished(StoryResponse response) {
                     homeView.onReloadSuccessful(response);
@@ -59,7 +59,7 @@ public class HomePresenterImpl implements HomePresenter {
     @Override
     public void loadMoreData(int nextPage) {
         if (isViewAttached()) {
-            storiesInteractor.fetchStories(nextPage, new StoriesInteractor.OnLoadedStoriesListener() {
+            storiesInteraction.fetchStories(nextPage, new StoriesInteraction.OnLoadedStoriesListener() {
                 @Override
                 public void onFinished(StoryResponse response) {
                     homeView.onLoadMoreSuccess(response);

@@ -1,10 +1,11 @@
 package sdt.com.crypticstories.home.view;
 
 
-import java.util.List;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import sdt.com.crypticstories.model.Story;
-import sdt.com.crypticstories.model.StoryResponse;
+import sdt.com.crypticstories.pojo.Story;
+import sdt.com.crypticstories.pojo.StoryResponse;
 
 public interface HomeView {
     void displayHome(StoryResponse response);
@@ -21,7 +22,7 @@ public interface HomeView {
 
     void hideRefresh();
 
-    void onStoryClicked(Story story);
+    void onStoryClicked(Story story, ImageView poster);
 
     void onLoadMoreSuccess(StoryResponse response);
 

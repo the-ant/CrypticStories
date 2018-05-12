@@ -9,10 +9,19 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorPrimary"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleTextColor="@android:color/white" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
+            android:text="Cryptic Stories"
+            android:fontFamily="@font/arima_madurai_bold"
+            android:textStyle="bold"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/container"

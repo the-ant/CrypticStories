@@ -3,20 +3,17 @@ package sdt.com.crypticstories.home.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sdt.com.crypticstories.api.StoryAPI;
-import sdt.com.crypticstories.model.Story;
-import sdt.com.crypticstories.model.StoryResponse;
+import sdt.com.crypticstories.pojo.StoryResponse;
 
-public class StoriesInteractorImpl implements StoriesInteractor {
+public class StoriesInteractionImpl implements StoriesInteraction {
     private static final String TAG = "stories_interactor";
     private StoryAPI storyAPI;
 
-    public StoriesInteractorImpl(StoryAPI storyAPI) {
+    public StoriesInteractionImpl(StoryAPI storyAPI) {
         this.storyAPI = storyAPI;
     }
 

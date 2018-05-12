@@ -1,9 +1,9 @@
 package sdt.com.crypticstories.home.model;
 
 
-import sdt.com.crypticstories.model.StoryResponse;
+import sdt.com.crypticstories.pojo.StoryResponse;
 
-public interface StoriesInteractor {
+public interface StoriesInteraction {
     void fetchStories(int currentPage, OnLoadedStoriesListener onLoadedStoriesListener);
 
     interface OnLoadedStoriesListener {

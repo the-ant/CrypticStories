@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +27,12 @@ import butterknife.ButterKnife;
 import sdt.com.crypticstories.R;
 import sdt.com.crypticstories.api.StoryService;
 import sdt.com.crypticstories.home.adapter.StoriesAdapter;
-import sdt.com.crypticstories.home.model.StoriesInteractor;
-import sdt.com.crypticstories.home.model.StoriesInteractorImpl;
+import sdt.com.crypticstories.home.model.StoriesInteraction;
+import sdt.com.crypticstories.home.model.StoriesInteractionImpl;
 import sdt.com.crypticstories.home.presenter.HomePresenter;
 import sdt.com.crypticstories.home.presenter.HomePresenterImpl;
-import sdt.com.crypticstories.model.Story;
-import sdt.com.crypticstories.model.StoryResponse;
+import sdt.com.crypticstories.pojo.Story;
+import sdt.com.crypticstories.pojo.StoryResponse;
 import sdt.com.crypticstories.utils.PaginationScrollListener;
 
 public class StoriesFragment extends Fragment implements HomeView {
@@ -66,6 +68,7 @@ public class StoriesFragment extends Fragment implements HomeView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         setHasOptionsMenu(true);
     }
 
@@ -74,8 +77,13 @@ public class StoriesFragment extends Fragment implements HomeView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stories, container, false);
         ButterKnife.bind(this, view);
-        init();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init();
     }
 
     private void init() {
@@ -84,8 +92,8 @@ public class StoriesFragment extends Fragment implements HomeView {
     }
 
     private void initData() {
-        StoriesInteractor storiesInteractor = new StoriesInteractorImpl(StoryService.getAPI());
-        homePresenter = new HomePresenterImpl(storiesInteractor);
+        StoriesInteraction storiesInteraction = new StoriesInteractionImpl(StoryService.getAPI());
+        homePresenter = new HomePresenterImpl(storiesInteraction);
         homePresenter.setView(this);
         homePresenter.displayStories(currentPage);
     }
@@ -182,8 +190,8 @@ public class StoriesFragment extends Fragment implements HomeView {
     }
 
     @Override
-    public void onStoryClicked(Story story) {
-        callback.onStoryClicked(story);
+    public void onStoryClicked(Story story, ImageView poster) {
+        callback.onStoryClicked(story, poster);
     }
 
     @Override
@@ -211,7 +219,7 @@ public class StoriesFragment extends Fragment implements HomeView {
     }
 
     public interface Callback {
-        void onStoryClicked(Story story);
+        void onStoryClicked(Story story, ImageView poster);
     }
 
     private void setupData() {

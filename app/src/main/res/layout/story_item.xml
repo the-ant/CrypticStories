@@ -6,20 +6,33 @@
     android:layout_height="300dp"
     android:layout_margin="10dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
+    app:cardElevation="0.1dp"
     tools:style="@style/CardView">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/poster"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:scaleType="fitXY"
-            android:background="@drawable/bg" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+
+            <ProgressBar
+                android:layout_width="@dimen/poster_progressbar_size"
+                android:id="@+id/loading_image_progress"
+                android:indeterminateDrawable="@drawable/custom_progress"
+                android:layout_height="@dimen/poster_progressbar_size"
+                android:layout_gravity="center"
+                android:theme="@style/CircularProgress" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +45,7 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:fontFamily="@font/arima_madurai_bold"
@@ -40,18 +53,18 @@
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:text="Tao đợi mẹ" />
+                tools:text="Tao đợi mẹ." />
 
             <TextView
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
-                android:id="@+id/description"
                 android:ellipsize="end"
-                android:fontFamily="@font/arima_madurai_thin"
+                android:fontFamily="sans-serif-condensed"
                 android:maxLines="2"
                 android:textSize="14sp"
-                tools:text="Tao đợi mẹ" />
+                tools:text="Tao đợi mẹ \nTao đợi mẹ" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

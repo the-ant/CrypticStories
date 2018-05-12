@@ -1,4 +1,4 @@
-package sdt.com.crypticstories.model;
+package sdt.com.crypticstories.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

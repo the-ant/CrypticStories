@@ -7,6 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="@color/background_recycler"
         android:layout_height="match_parent">
 
         <RelativeLayout
@@ -19,7 +20,7 @@
                 android:id="@+id/storiesListing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_recycler"
+                android:overScrollMode="never"
                 android:clipToPadding="false"
                 android:scrollbars="vertical" />
         </RelativeLayout>

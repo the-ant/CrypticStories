@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFC107</color>
-    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="colorPrimary">#e9e9e9</color>
+    <color name="colorPrimaryDark">#b7b7b7</color>
     <color name="colorAccent">#536DFE</color>
 
     <color name="story_title_text_color">#000000</color>
     <color name="placeholder_color" >#b6b5b5</color>
     <color name="background">#EFEFEF</color>
-    <color name="background_recycler">#f2f2f2</color>
+    <color name="background_recycler">#e9e9e9</color>
 
     <color name="colorBlur">#30f9f9f9</color>
 </resources>
