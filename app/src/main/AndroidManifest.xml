@@ -25,7 +25,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".search.SearchActivity" />
+        <activity android:name=".search.view.SearchActivity" />
         <activity android:name=".library.LibraryActivity"></activity>
     </application>
 

@@ -4,7 +4,7 @@ public class Constants {
 
     public static final String STORY = "story";
 
-    public static final String IP_ADDRESS = "http://192.168.1.83:3000/v3/";
+    public static final String IP_ADDRESS = "http://192.168.1.41:3000/v3/";
 
     public static final String HEADER_URL_IMAGE = IP_ADDRESS + "story?image=";
 

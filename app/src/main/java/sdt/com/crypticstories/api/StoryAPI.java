@@ -19,4 +19,7 @@ public interface StoryAPI {
 
     @GET("stories/top-view")
     Call<List<Story>> getRecommendedStories();
+
+    @GET("stories/search")
+    Call<List<Story>> searchStories(@Query("string") String searchString);
 }

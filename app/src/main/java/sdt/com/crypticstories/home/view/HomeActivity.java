@@ -8,8 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.parceler.Parcels;
 
@@ -18,7 +16,7 @@ import sdt.com.crypticstories.R;
 import sdt.com.crypticstories.detail.view.DetailStoryActivity;
 import sdt.com.crypticstories.library.LibraryActivity;
 import sdt.com.crypticstories.pojo.Story;
-import sdt.com.crypticstories.search.SearchActivity;
+import sdt.com.crypticstories.search.view.SearchActivity;
 
 public class HomeActivity extends AppCompatActivity implements StoriesFragment.Callback {
     public static final String HOME_FRAGMENT = "HomeFragment";
