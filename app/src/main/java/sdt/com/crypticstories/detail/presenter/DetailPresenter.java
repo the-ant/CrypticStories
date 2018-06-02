@@ -13,4 +13,12 @@ public interface DetailPresenter {
     void hideExplanation();
 
     void destroy();
+
+    void setRecommendedList();
+
+    void resetDetail(Story story);
+
+    void setViewsStory(Story story);
+
+    void addToLib(Story story);
 }

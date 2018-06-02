@@ -20,6 +20,8 @@
             android:text="Cryptic Stories"
             android:fontFamily="@font/arima_madurai_bold"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:layout_height="wrap_content" />
     </android.support.v7.widget.Toolbar>
 

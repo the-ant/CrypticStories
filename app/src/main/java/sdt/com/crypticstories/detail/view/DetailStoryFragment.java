@@ -1,28 +1,46 @@
 package sdt.com.crypticstories.detail.view;
 
-import android.os.Build;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sdt.com.crypticstories.Constants;
 import sdt.com.crypticstories.R;
+import sdt.com.crypticstories.api.StoryService;
+import sdt.com.crypticstories.detail.adapter.RecommendAdapter;
+import sdt.com.crypticstories.detail.model.DetailInteraction;
+import sdt.com.crypticstories.detail.model.DetailInteractionImpl;
 import sdt.com.crypticstories.detail.presenter.DetailPresenter;
 import sdt.com.crypticstories.detail.presenter.DetailPresenterImpl;
 import sdt.com.crypticstories.pojo.Story;
@@ -30,6 +48,12 @@ import sdt.com.crypticstories.pojo.Story;
 public class DetailStoryFragment extends Fragment implements DetailView {
     private static final String TAG = "detail";
 
+    @BindView(R.id.root)
+    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.load_detail_progress)
+    ProgressBar loadingProgressBar;
     @BindView(R.id.poster)
     ImageView posterImage;
     @BindView(R.id.story_name)
@@ -48,25 +72,44 @@ public class DetailStoryFragment extends Fragment implements DetailView {
     Button btnReadExplanation;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.container)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.list_recommend)
+    RecyclerView listRecommend;
+    @BindView(R.id.add_lib_button)
+    ImageView btnAddLib;
 
-    private Story story;
     private DetailPresenter detailPresenter;
-    private String imageTransitionName;
     private boolean isShowed = false;
+    private List<Story> stories = new ArrayList<>();
+    private RecommendAdapter recommendAdapter;
+    private Story story;
+    private Callback callback;
 
-    public static DetailStoryFragment getInstance(@NonNull Story story, String imageTransitionName) {
+    public static DetailStoryFragment getInstance(@NonNull Story story) {
         Bundle args = new Bundle();
         args.putParcelable(Constants.STORY, Parcels.wrap(story));
-        args.putString(Constants.IMAGE_TRANSITION_NAME, imageTransitionName);
         DetailStoryFragment detailStoryFragment = new DetailStoryFragment();
         detailStoryFragment.setArguments(args);
         return detailStoryFragment;
+    }
+
+    public interface Callback {
+        void onStoryClicked(Story story);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (DetailStoryFragment.Callback) context;
     }
 
     @Nullable
@@ -81,17 +124,49 @@ public class DetailStoryFragment extends Fragment implements DetailView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();
+        initUI();
+        initListRecommend();
+        initDetail(args);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void initUI() {
+        ((DetailStoryActivity) getActivity()).setSupportActionBar(toolbar);
+        ((DetailStoryActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((DetailStoryActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+        ((DetailStoryActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+
+        collapsingToolbarLayout.setTitleEnabled(false);
+        toolbar.setTitle("");
+        ((DetailStoryActivity) getActivity()).getSupportActionBar().setTitle("");
+
+        btnAddLib.setOnClickListener(v -> showAlert());
+    }
+
+    private void initListRecommend() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
+        listRecommend.setLayoutManager(layoutManager);
+        listRecommend.setHasFixedSize(true);
+        listRecommend.setItemAnimator(new DefaultItemAnimator());
+
+        recommendAdapter = new RecommendAdapter(stories, this);
+        listRecommend.setAdapter(recommendAdapter);
+    }
+
+    private void initDetail(Bundle args) {
+        DetailInteraction detailInteraction = new DetailInteractionImpl(StoryService.getAPI());
+        detailPresenter = new DetailPresenterImpl(detailInteraction);
+        detailPresenter.setView(this);
+
         if (args != null) {
             Story story = Parcels.unwrap(args.getParcelable(Constants.STORY));
-            String imageTransitionName = args.getString(Constants.IMAGE_TRANSITION_NAME);
-
-            if (story != null && !imageTransitionName.isEmpty()) {
-                this.story = story;
-                this.imageTransitionName = imageTransitionName;
-                detailPresenter = new DetailPresenterImpl();
-                detailPresenter.setView(this);
+            if (story != null) {
                 detailPresenter.showDetail(story);
-
                 btnReadExplanation.setOnClickListener(v -> {
                     if (!isShowed)
                         detailPresenter.showExplanation();
@@ -104,31 +179,25 @@ public class DetailStoryFragment extends Fragment implements DetailView {
 
     @Override
     public void showDetail(Story story) {
+        this.story = story;
+        new Handler().postDelayed(() -> {
+            setupData(story);
+            detailPresenter.setRecommendedList();
+            hideLoading();
+            scrollView.scrollTo(0, 0);
+        }, 1000);
+    }
+
+    private void setupData(Story story) {
         storyName.setText(story.getNameStory());
         content.setText(story.getContent());
-        views.setText("" + story.getViews());
+        views.setText("" + story.getViews().toString());
 
         String[] tmp = story.getReleaseDate().split("\\s+");
         releaseDate.setText(tmp[0] + "");
-
         explanation.setText(story.getExplaining());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            posterImage.setTransitionName(imageTransitionName);
-        }
-        Picasso.get()
-                .load(Constants.HEADER_URL_IMAGE + story.getPoster())
-                .into(posterImage, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        ((DetailStoryActivity) getContext()).supportStartPostponedEnterTransition();
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        ((DetailStoryActivity) getContext()).supportStartPostponedEnterTransition();
-                    }
-                });
+        Picasso.get().load(Constants.HEADER_URL_IMAGE + story.getPoster()).into(posterImage);
     }
 
     @Override
@@ -137,7 +206,6 @@ public class DetailStoryFragment extends Fragment implements DetailView {
         explanation.setVisibility(View.VISIBLE);
         isShowed = true;
         btnReadExplanation.setText("Hide");
-        scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
     }
 
     @Override
@@ -145,6 +213,47 @@ public class DetailStoryFragment extends Fragment implements DetailView {
         titleExplanation.setVisibility(View.GONE);
         explanation.setVisibility(View.GONE);
         isShowed = false;
-        btnReadExplanation.setText("Explanation");
+        btnReadExplanation.setText("Explain");
+    }
+
+    @Override
+    public void onStoryClicked(Story story) {
+        detailPresenter.setViewsStory(story);
+        callback.onStoryClicked(story);
+        detailPresenter.destroy();
+    }
+
+    @Override
+    public void showRecommendedStories(List<Story> list) {
+        recommendAdapter.clear();
+        for (Story story : list) {
+            if (story.getId() != this.story.getId()) {
+                recommendAdapter.add(story);
+            }
+        }
+    }
+
+    @Override
+    public void showLoading() {
+        loadingProgressBar.setVisibility(View.VISIBLE);
+        coordinatorLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingProgressBar.setVisibility(View.INVISIBLE);
+        coordinatorLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showAlert() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Library");
+        alertDialog.setMessage("Add \"" + this.story.getNameStory() + "\" to Library");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (dialog, which) -> {
+            detailPresenter.addToLib(this.story);
+            dialog.dismiss();
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL", ((dialog, which) -> dialog.dismiss()));
+        alertDialog.show();
     }
 }

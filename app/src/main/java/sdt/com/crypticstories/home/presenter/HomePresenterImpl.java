@@ -2,6 +2,7 @@ package sdt.com.crypticstories.home.presenter;
 
 import sdt.com.crypticstories.home.model.StoriesInteraction;
 import sdt.com.crypticstories.home.view.HomeView;
+import sdt.com.crypticstories.pojo.Story;
 import sdt.com.crypticstories.pojo.StoryResponse;
 
 public class HomePresenterImpl implements HomePresenter {
@@ -71,6 +72,11 @@ public class HomePresenterImpl implements HomePresenter {
                 }
             });
         }
+    }
+
+    @Override
+    public void setViewsStory(Story story) {
+        storiesInteraction.updateViewsStory(story);
     }
 
     @Override

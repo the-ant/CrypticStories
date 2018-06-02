@@ -14,10 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +110,9 @@ public class StoriesFragment extends Fragment implements HomeView {
         storiesListing.setLayoutManager(layoutManager);
         storiesListing.setHasFixedSize(true);
         storiesListing.setItemAnimator(new DefaultItemAnimator());
+        storiesListing.setItemViewCacheSize(20);
+        storiesListing.setDrawingCacheEnabled(true);
+        storiesListing.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         storiesAdapter = new StoriesAdapter(stories, this);
         storiesListing.setAdapter(storiesAdapter);
@@ -190,8 +191,9 @@ public class StoriesFragment extends Fragment implements HomeView {
     }
 
     @Override
-    public void onStoryClicked(Story story, ImageView poster) {
-        callback.onStoryClicked(story, poster);
+    public void onStoryClicked(Story story) {
+        homePresenter.setViewsStory(story);
+        callback.onStoryClicked(story);
     }
 
     @Override
@@ -219,7 +221,7 @@ public class StoriesFragment extends Fragment implements HomeView {
     }
 
     public interface Callback {
-        void onStoryClicked(Story story, ImageView poster);
+        void onStoryClicked(Story story);
     }
 
     private void setupData() {

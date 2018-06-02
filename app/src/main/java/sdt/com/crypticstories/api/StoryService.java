@@ -6,10 +6,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import sdt.com.crypticstories.Constants;
 
 public class StoryService {
-    public static final int CONNECT_TIMEOUT_IN_MS = 30000;
-    public static final String BASE_URL = "http://192.168.1.84:3000/v3/";
+    public static final int CONNECT_TIMEOUT_IN_MS = 20000;
 
     private static Retrofit retrofit = null;
 
@@ -20,7 +20,7 @@ public class StoryService {
     private static Retrofit getRetrofit() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(Constants.IP_ADDRESS)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(provideOkHttpClient())
                     .build();

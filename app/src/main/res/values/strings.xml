@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">CrypticStories</string>
     <string name="home_title">Cryptic Stories</string>
+    <string name="detail_story_poster_transition">poster</string>
+    <string name="detail_story_title_transition">title</string>
+    <string name="detail_story_content_transition">content</string>
+    <string name="recommend_text">Recommended for you</string>
 </resources>

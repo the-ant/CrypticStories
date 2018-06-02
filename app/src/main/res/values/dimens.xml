@@ -9,8 +9,8 @@
 
     <dimen name="loading_width">16dp</dimen>
     <dimen name="loading_height">16dp</dimen>
-    <dimen name="loading_width_medium">24dp</dimen>
-    <dimen name="loading_height_medium">24dp</dimen>
+    <dimen name="loading_width_medium">16dp</dimen>
+    <dimen name="loading_height_medium">16dp</dimen>
     <dimen name="story_item_margin">8dp</dimen>
     <dimen name="poster_progressbar_size">16dp</dimen>
 </resources>

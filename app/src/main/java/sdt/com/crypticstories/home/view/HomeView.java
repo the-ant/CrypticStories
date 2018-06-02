@@ -22,7 +22,7 @@ public interface HomeView {
 
     void hideRefresh();
 
-    void onStoryClicked(Story story, ImageView poster);
+    void onStoryClicked(Story story);
 
     void onLoadMoreSuccess(StoryResponse response);
 
