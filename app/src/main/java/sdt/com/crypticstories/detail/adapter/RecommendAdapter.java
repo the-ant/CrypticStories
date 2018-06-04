@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import sdt.com.crypticstories.R;
+import sdt.com.crypticstories.base.BaseView;
 import sdt.com.crypticstories.detail.view.DetailView;
 import sdt.com.crypticstories.home.adapter.StoryViewHolder;
 import sdt.com.crypticstories.pojo.Story;
@@ -18,11 +19,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private List<Story> stories;
     private Context context;
-    private DetailView detailView;
+    private BaseView baseView;
 
-    public RecommendAdapter(List<Story> stories, DetailView detailView) {
+    public RecommendAdapter(List<Story> stories, BaseView baseView) {
         this.stories = stories;
-        this.detailView = detailView;
+        this.baseView = baseView;
     }
 
     @NonNull
@@ -38,7 +39,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Story story = stories.get(position);
-        ((RecommendVH) holder).bind(story, detailView);
+        ((RecommendVH) holder).bind(story, baseView);
     }
 
     @Override

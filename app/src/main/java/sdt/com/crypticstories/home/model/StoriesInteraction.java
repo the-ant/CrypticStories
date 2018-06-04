@@ -7,7 +7,11 @@ import sdt.com.crypticstories.pojo.StoryResponse;
 public interface StoriesInteraction {
     void fetchStories(int currentPage, OnLoadedStoriesListener onLoadedStoriesListener);
 
-    void updateViewsStory(Story story);
+    void updateViewsStory(Story story, OnUpdatedStoriesListener listener);
+
+    interface OnUpdatedStoriesListener {
+        void onUpdated(boolean successful);
+    }
 
     interface OnLoadedStoriesListener {
         void onFinished(StoryResponse response);

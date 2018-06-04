@@ -58,9 +58,9 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            loadingImageProgressBar.setVisibility(View.GONE);
             poster.setScaleType(ImageView.ScaleType.CENTER_CROP);
             poster.setImageBitmap(bitmap);
+            loadingImageProgressBar.setVisibility(View.GONE);
         }
 
         @Override

@@ -2,9 +2,10 @@ package sdt.com.crypticstories.detail.view;
 
 import java.util.List;
 
+import sdt.com.crypticstories.base.BaseView;
 import sdt.com.crypticstories.pojo.Story;
 
-public interface DetailView {
+public interface DetailView extends BaseView {
     void showDetail(Story story);
 
     void showExplanation();
@@ -19,4 +20,7 @@ public interface DetailView {
 
     void hideLoading();
 
+    void updateButtonAddLib(boolean isAdded);
+
+    void notifyAddLib(boolean successful);
 }

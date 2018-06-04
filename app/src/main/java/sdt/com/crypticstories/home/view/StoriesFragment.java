@@ -89,6 +89,24 @@ public class StoriesFragment extends Fragment implements HomeView {
         initData();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
+
     private void initData() {
         StoriesInteraction storiesInteraction = new StoriesInteractionImpl(StoryService.getAPI());
         homePresenter = new HomePresenterImpl(storiesInteraction);
@@ -97,9 +115,7 @@ public class StoriesFragment extends Fragment implements HomeView {
     }
 
     private void initLayoutReferences() {
-        swipeRefresh.setColorSchemeResources(android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        swipeRefresh.setColorSchemeResources(android.R.color.black);
         swipeRefresh.setOnRefreshListener(() -> {
             isLastPage = false;
             currentPage = PAGE_START;
@@ -110,9 +126,6 @@ public class StoriesFragment extends Fragment implements HomeView {
         storiesListing.setLayoutManager(layoutManager);
         storiesListing.setHasFixedSize(true);
         storiesListing.setItemAnimator(new DefaultItemAnimator());
-        storiesListing.setItemViewCacheSize(20);
-        storiesListing.setDrawingCacheEnabled(true);
-        storiesListing.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         storiesAdapter = new StoriesAdapter(stories, this);
         storiesListing.setAdapter(storiesAdapter);
@@ -206,6 +219,11 @@ public class StoriesFragment extends Fragment implements HomeView {
             storiesAdapter.addLoadingFooter();
         else
             isLastPage = true;
+    }
+
+    @Override
+    public void notifyUpdatedViewsStory(boolean successful) {
+        Log.d(TAG, "notifyUpdatedViewsStory: " + successful);
     }
 
     @Override

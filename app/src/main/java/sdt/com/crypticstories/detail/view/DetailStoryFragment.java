@@ -1,7 +1,6 @@
 package sdt.com.crypticstories.detail.view;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -10,12 +9,14 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +47,7 @@ import sdt.com.crypticstories.detail.presenter.DetailPresenterImpl;
 import sdt.com.crypticstories.pojo.Story;
 
 public class DetailStoryFragment extends Fragment implements DetailView {
-    private static final String TAG = "detail";
+    private static final String TAG = "detail_fragment";
 
     @BindView(R.id.root)
     CoordinatorLayout coordinatorLayout;
@@ -104,6 +105,28 @@ public class DetailStoryFragment extends Fragment implements DetailView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
+        Log.d(TAG, "onCreate: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        if (this.story != null) showDetail(this.story);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+        detailPresenter.destroy();
     }
 
     @Override
@@ -127,6 +150,7 @@ public class DetailStoryFragment extends Fragment implements DetailView {
         initUI();
         initListRecommend();
         initDetail(args);
+        Log.d(TAG, "onViewCreated: ");
     }
 
     @Override
@@ -166,7 +190,7 @@ public class DetailStoryFragment extends Fragment implements DetailView {
         if (args != null) {
             Story story = Parcels.unwrap(args.getParcelable(Constants.STORY));
             if (story != null) {
-                detailPresenter.showDetail(story);
+                showDetail(story);
                 btnReadExplanation.setOnClickListener(v -> {
                     if (!isShowed)
                         detailPresenter.showExplanation();
@@ -179,16 +203,16 @@ public class DetailStoryFragment extends Fragment implements DetailView {
 
     @Override
     public void showDetail(Story story) {
-        this.story = story;
         new Handler().postDelayed(() -> {
+            this.story = story;
             setupData(story);
             detailPresenter.setRecommendedList();
             hideLoading();
-            scrollView.scrollTo(0, 0);
-        }, 1000);
+        }, 500);
     }
 
     private void setupData(Story story) {
+        detailPresenter.checkAddedLib(story.getId());
         storyName.setText(story.getNameStory());
         content.setText(story.getContent());
         views.setText("" + story.getViews().toString());
@@ -198,6 +222,24 @@ public class DetailStoryFragment extends Fragment implements DetailView {
         explanation.setText(story.getExplaining());
 
         Picasso.get().load(Constants.HEADER_URL_IMAGE + story.getPoster()).into(posterImage);
+    }
+
+    @Override
+    public void updateButtonAddLib(boolean isAdded) {
+        if (isAdded) {
+            btnAddLib.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_ok));
+            btnAddLib.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void notifyAddLib(boolean successful) {
+        if (successful) {
+            showAddLibAlert("Added to Library!");
+            updateButtonAddLib(true);
+        } else {
+            showAddLibAlert("Can't add to Library!");
+        }
     }
 
     @Override
@@ -235,6 +277,7 @@ public class DetailStoryFragment extends Fragment implements DetailView {
 
     @Override
     public void showLoading() {
+        Log.d(TAG, "showLoading: ");
         loadingProgressBar.setVisibility(View.VISIBLE);
         coordinatorLayout.setVisibility(View.INVISIBLE);
     }
@@ -254,6 +297,16 @@ public class DetailStoryFragment extends Fragment implements DetailView {
             dialog.dismiss();
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL", ((dialog, which) -> dialog.dismiss()));
+        alertDialog.show();
+    }
+
+    private void showAddLibAlert(String msg) {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Library");
+        alertDialog.setMessage(msg);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (dialog, which) -> {
+            dialog.dismiss();
+        });
         alertDialog.show();
     }
 }

@@ -1,9 +1,6 @@
 package sdt.com.crypticstories.home.view;
 
 
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import sdt.com.crypticstories.pojo.Story;
 import sdt.com.crypticstories.pojo.StoryResponse;
 
@@ -26,5 +23,5 @@ public interface HomeView {
 
     void onLoadMoreSuccess(StoryResponse response);
 
-//    void showSearchActivity();
+    void notifyUpdatedViewsStory(boolean successful);
 }

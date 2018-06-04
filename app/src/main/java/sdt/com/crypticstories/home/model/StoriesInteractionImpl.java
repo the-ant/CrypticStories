@@ -41,7 +41,7 @@ public class StoriesInteractionImpl implements StoriesInteraction {
     }
 
     @Override
-    public void updateViewsStory(Story story) {
+    public void updateViewsStory(Story story, OnUpdatedStoriesListener listener) {
         Call<Integer> call = storyAPI.updateViewsStory(story.getId());
         call.enqueue(new Callback<Integer>() {
             @Override
@@ -51,11 +51,13 @@ public class StoriesInteractionImpl implements StoriesInteraction {
                 } else {
                     Log.i(TAG, "onResponse: update failed");
                 }
+                listener.onUpdated(response.isSuccessful());
             }
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
                 Log.i(TAG, "onResponse: update failed");
+                listener.onUpdated(false);
             }
         });
     }

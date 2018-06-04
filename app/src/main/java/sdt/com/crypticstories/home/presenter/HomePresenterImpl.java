@@ -76,7 +76,7 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void setViewsStory(Story story) {
-        storiesInteraction.updateViewsStory(story);
+        storiesInteraction.updateViewsStory(story, successful -> homeView.notifyUpdatedViewsStory(successful));
     }
 
     @Override

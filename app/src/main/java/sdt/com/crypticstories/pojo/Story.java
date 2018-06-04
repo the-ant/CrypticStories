@@ -5,10 +5,14 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 @Parcel
-public class Story {
+public class Story extends RealmObject{
     @SerializedName("_id")
     @Expose
+    @PrimaryKey
     private Integer id;
     @SerializedName("name_story")
     @Expose

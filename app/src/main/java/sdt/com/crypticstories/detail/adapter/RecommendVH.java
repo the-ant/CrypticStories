@@ -17,8 +17,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sdt.com.crypticstories.Constants;
 import sdt.com.crypticstories.R;
+import sdt.com.crypticstories.base.BaseView;
 import sdt.com.crypticstories.detail.view.DetailView;
-import sdt.com.crypticstories.home.view.HomeView;
 import sdt.com.crypticstories.pojo.Story;
 
 public class RecommendVH extends RecyclerView.ViewHolder {
@@ -38,7 +38,7 @@ public class RecommendVH extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(final Story story, DetailView detailView) {
+    public void bind(final Story story, BaseView detailView) {
         loadingImageProgressBar.setVisibility(View.VISIBLE);
         poster.setImageDrawable(null);
         title.setText(story.getNameStory());

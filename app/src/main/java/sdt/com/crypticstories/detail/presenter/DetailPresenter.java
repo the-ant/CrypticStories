@@ -21,4 +21,6 @@ public interface DetailPresenter {
     void setViewsStory(Story story);
 
     void addToLib(Story story);
+
+    void checkAddedLib(Integer id);
 }

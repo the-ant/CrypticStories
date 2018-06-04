@@ -4,9 +4,15 @@ import android.util.Log;
 
 import java.util.List;
 
+import io.realm.Realm;
+import sdt.com.crypticstories.api.StoryAPI;
+import sdt.com.crypticstories.api.StoryService;
 import sdt.com.crypticstories.detail.model.DetailInteraction;
 import sdt.com.crypticstories.detail.view.DetailView;
+import sdt.com.crypticstories.library.model.LibInteraction;
+import sdt.com.crypticstories.library.model.LibInteractionImpl;
 import sdt.com.crypticstories.pojo.Story;
+import sdt.com.crypticstories.utils.RealmUtil;
 
 public class DetailPresenterImpl implements DetailPresenter {
     private static final String TAG = "detail_presenter";
@@ -57,14 +63,30 @@ public class DetailPresenterImpl implements DetailPresenter {
 
     @Override
     public void addToLib(Story story) {
-//        detailView.showAlert(story.getNameStory());
+        detailInteraction.addToLib(story, successful -> detailView.notifyAddLib(successful));
+    }
+
+    @Override
+    public void checkAddedLib(Integer id) {
+        boolean isAdded = detailInteraction.isAddedLib(id);
+        detailView.updateButtonAddLib(isAdded);
     }
 
     @Override
     public void showDetail(Story story) {
         if (isViewAttached()) {
             detailView.showLoading();
-            detailView.showDetail(story);
+            detailInteraction.fetchStory(story.getId(), new DetailInteraction.OnFetchedStoryListener() {
+                @Override
+                public void onFinished(Story story) {
+                    detailView.showDetail(story);
+                }
+
+                @Override
+                public void onFailure(String msg) {
+                    Log.d(TAG, "onFailure: " + msg);
+                }
+            });
         }
     }
 
