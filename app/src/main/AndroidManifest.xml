@@ -26,7 +26,11 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".search.view.SearchActivity" />
+<<<<<<< HEAD
         <activity android:name=".library.view.LibraryActivity"></activity>
+=======
+        <activity android:name=".library.LibraryActivity"></activity>
+>>>>>>> 7df25ee814876d3ed93d01f8be0681c98d81a950
     </application>
 
 </manifest>

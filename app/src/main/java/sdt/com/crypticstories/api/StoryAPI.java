@@ -22,10 +22,11 @@ public interface StoryAPI {
 
     @GET("stories/top-view")
     Call<List<Story>> getRecommendedStories();
-
+    
     @GET("story/{story_id}")
     Call<Story> getStory(@Path("story_id") int id);
 
     @GET("stories/search")
     Call<List<ResultSearch>> getResultSearch(@Query("string") String name);
+
 }

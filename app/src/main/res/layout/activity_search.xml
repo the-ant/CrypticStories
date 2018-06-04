@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@color/colorPrimary">
+=======
+    tools:context=".search.view.SearchActivity">
+>>>>>>> 7df25ee814876d3ed93d01f8be0681c98d81a950
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/header"
